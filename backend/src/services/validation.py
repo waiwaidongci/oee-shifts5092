@@ -19,3 +19,19 @@ def validate_source(d):
 def validate_policy(d):
  if not isinstance(d,dict) or not isinstance(d.get('version'),str) or not 2<=len(d['version'])<=120: raise ValueError('口径版本名不合法')
  if not isinstance(d.get('definition'),str) or not d['definition']: raise ValueError('核算说明不能为空')
+def validate_window(machine,start,end):
+ if not isinstance(machine,str) or not 1<=len(machine)<=120: raise ValueError('设备名不合法')
+ number(start,'窗口开始');number(end,'窗口结束')
+ if not start<end: raise ValueError('班表窗口结束需晚于开始')
+ if end-start>7*86400: raise ValueError('单个班表窗口不得超过7天')
+def validate_order(d,molds):
+ if not isinstance(d.get('code'),str) or not 1<=len(d['code'].strip())<=60: raise ValueError('工单编号需为1-60字')
+ number(d.get('qty'),'件数',minimum=1,integer=True)
+ if d['qty']>1000000: raise ValueError('件数过大')
+ number(d.get('due'),'交期',minimum=1)
+ number(d.get('changeover_sec'),'换模秒数',integer=True)
+ if d['changeover_sec']>86400: raise ValueError('换模耗时不得超过24小时')
+ if d.get('mold') not in molds: raise ValueError('模具不存在，请先登记')
+ ms=d.get('machines')
+ if not isinstance(ms,list) or not 1<=len(ms)<=12 or len(set(ms))!=len(ms): raise ValueError('可用设备需为1-12台且不重复')
+ if not all(isinstance(m,str) and 1<=len(m)<=120 for m in ms): raise ValueError('可用设备名不合法')

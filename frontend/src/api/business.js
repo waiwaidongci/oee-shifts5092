@@ -1,6 +1,15 @@
 import {request} from './client.js';
-export const loadAll=async()=>Object.fromEntries(await Promise.all(['sources','periods','policies','runs','schedules','deliveries','audits'].map(async k=>[k,await request('/'+k)])));
+export const loadAll=async()=>Object.fromEntries(await Promise.all(['sources','periods','policies','runs','schedules','deliveries','audits','molds','windows','orders','plans','bookings'].map(async k=>[k,await request('/'+k)])));
 export const saveSource=(data,id)=>request('/sources'+(id?'/'+id:''),id?'PUT':'POST',{data});
 export const savePolicy=data=>request('/policies','POST',{data});
 export const submitRun=data=>request('/runs','POST',data);
 export const approveRun=(id,note)=>request('/runs/'+id+'/approve','POST',{note});
+export const saveMold=name=>request('/molds','POST',{name});
+export const deleteMold=id=>request('/molds/'+id,'DELETE');
+export const saveWindow=data=>request('/windows','POST',data);
+export const deleteWindow=id=>request('/windows/'+id,'DELETE');
+export const saveOrder=data=>request('/orders','POST',data);
+export const deleteOrder=id=>request('/orders/'+id,'DELETE');
+export const loadCycles=id=>request('/cycles/'+id);
+export const preschedule=run_id=>request('/preschedule','POST',{run_id});
+export const confirmPlan=(id,key)=>request('/plans/'+id+'/confirm','POST',{idempotency_key:key});

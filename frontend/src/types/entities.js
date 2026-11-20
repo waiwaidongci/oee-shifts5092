@@ -1,2 +1,2 @@
-// API实体字段约定：来源{id,natural_key,data}、口径{id,version,data}、报告{id,status,snapshot,checksum,result,approved}、计划{next_at,enabled}。
-export const ENTITY_KEYS=['sources','policies','runs','schedules','deliveries'];
+// API实体字段约定：来源{id,natural_key,data}、口径{id,version,data}、报告{id,status,snapshot,checksum,result,approved}、计划{next_at,enabled}；预排：模具{id,name}、班表{id,machine,start,end}、工单{id,code,qty,due,mold,changeover_sec,machines}、方案{id,status,source_version,snapshot,result}、占用{id,order_code,machine,mold,setup_start,start,end}。
+export const ENTITY_KEYS=['sources','policies','runs','schedules','deliveries','molds','windows','orders','plans','bookings'];
